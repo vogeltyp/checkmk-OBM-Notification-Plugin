@@ -22,8 +22,9 @@ from pathlib import Path
 from requests.auth import HTTPBasicAuth
 
 
-# disable SSL-Warnings...
-urllib3.disable_warnings()
+# disable SSL-Warnings configured...
+if config['enableSSLverification']:
+    urllib3.disable_warnings()
 
 
 # globals
