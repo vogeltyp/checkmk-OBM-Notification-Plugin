@@ -6,7 +6,7 @@
 #
 # OBM-notification plugin for checkmk
 #
-# written by H.Vogelsang, Aceniq AG, Switzerland
+# written by H.Vogelsang, Aveniq AG, Switzerland
 # first released June 2021
 #
 # This script is intended to send
