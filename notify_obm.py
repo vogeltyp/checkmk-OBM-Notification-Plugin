@@ -22,11 +22,6 @@ from pathlib import Path
 from requests.auth import HTTPBasicAuth
 
 
-# disable SSL-Warnings configured...
-if config['enableSSLverification']:
-    urllib3.disable_warnings()
-
-
 # globals
 global config
 
@@ -147,6 +142,10 @@ if __name__ == '__main__':
     else:
         print("config.json not found. exiting...")
         exit("ERROR#001_CONFIG_MISSING")
+
+    # disable SSL-Warnings configured...
+    if not config['enableSSLverification']:
+        urllib3.disable_warnings()
 
     # get environment variables
     data = getEnvironment()
