@@ -12,11 +12,15 @@
 # This script is intended to send
 # notifications from checkmk to Microfocus OBM.
 #
-
-
+import binascii
+import hashlib
 import json
-import urllib3
+import os
+import ase
 import requests
+import stat
+import urllib3
+from Crypto.Cipher import DES
 from os import environ
 from pathlib import Path
 from requests.auth import HTTPBasicAuth
@@ -131,17 +135,67 @@ def sendEvent(eventData):
         exit("ERROR#002_SENTFAULT")
 
 
+def checkFilepermissions(filepath):
+    _stat = os.stat(filepath)
+    _permission = oct(_stat[stat.ST_MODE])[-3:]
+
+    if _permission == "400":
+        if _stat.st_uid == os.getuid():
+            return True
+        else:
+            print("your config.json is too open.\n"
+                  "verify that config.json is owned by site-user and has only read-permission (400) for the owner.\n"
+                  "exiting...")
+            exit("ERROR#006_WRONG_FILEPERMISSION")
+    elif os.name == "nt":
+        return True
+    else:
+        print("your config.json is too open.\n"
+              "verify that config.json is owned by site-user and has only read-permission (400) for the owner.\n"
+              "exiting...")
+        exit("ERROR#006_WRONG_FILEPERMISSION")
+
+
+def checkMyself():
+    md5_hash = hashlib.md5()
+    md5_hash.update(open(__file__, "rb").read())
+    if md5_hash.hexdigest() == config["scriptchecksum"]:
+        return True
+    else:
+        print("your notify-plugin could not be verified. exiting...")
+        exit("ERROR#007_SCRIPT_UNVERIFIED")
+
+
+def decrypt(hash):
+    md5 = hashlib.md5(open(__file__, "rb").read())
+    key = md5.hexdigest()[0:8].encode()
+    des = DES.new(key, DES.MODE_ECB)
+    decrypted = des.decrypt(binascii.unhexlify(hash))
+    return decrypted
+
+
 if __name__ == '__main__':
     # determine my location
     scriptPath = Path(__file__).parent
 
-    # check if configfile exists and parse it if so
+    # check if configfile exists
     configFile = scriptPath.joinpath('config.json')
+
+    # check file-permissions of configfile
+    checkFilepermissions(configFile)
+
+    # parse configfile
     if Path(configFile).exists():
         config = json.loads(open(configFile).read())
     else:
         print("config.json not found. exiting...")
         exit("ERROR#001_CONFIG_MISSING")
+
+    # check myself for intrusion
+    checkMyself()
+
+    # decrypt password
+    config["obmPassword"] = decrypt(config["obmPasswordCipher"])
 
     # disable SSL-Warnings configured...
     if not config['enableSSLverification']:

@@ -1,9 +1,10 @@
 {
   "obmURL":                 "https://YOURSERVER",
   "obmUser":                "OBMUser",
-  "obmPassword":            "OBMPassword",
+  "obmPasswordCipher":      "OBMPassword",
   "enableSSLverification":  false,
   "debug":                  false,
   "severityLevel":          ["critical", "major", "minor", "warning", "normal"],
-  "priorityLevel":          ["low", "medium", "high"]
+  "priorityLevel":          ["low", "medium", "high"],
+  "scriptchecksum":         "md5checksum"
 }

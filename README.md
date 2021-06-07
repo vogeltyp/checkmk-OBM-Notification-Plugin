@@ -21,3 +21,5 @@ That's it.
   - only the defined priority-levels in config.json are allowed by OBM
 - ERROR#005_ENV_MISSING
   - the script could not find the ENV-Vars sent by checkmk
+- ERROR#006_WRONG_FILEPERMISSION
+  - the config.json MUST belong to the site-owner and MUST NOT have any other permission than read-rights
