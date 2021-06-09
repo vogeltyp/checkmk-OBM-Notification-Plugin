@@ -1,9 +1,10 @@
 # README
 ## Installation
-- To use this plugin place a copy of the notify_obm.py and config.json.dist in the checkmk notification-plugins-directory
+- to use this plugin place a copy of the notify_obm.py and config.json.dist in the checkmk notification-plugins-directory
 `/opt/omd/sites/testsite/local/share/check_mk/notifications`
-- Write your OBM-URL, user and password to the `config.json.dist` and rename it to `config.json`
-- make the script executeable `chmod +x notify_obm.py`
+- write your OBM-URL, user and a DES-Hash of you Password to the `config.json.dist` and rename it to `config.json`
+- change the owner to your checkmk-Site-User and the permissions to 400 (readonly for that user)
+- make the script executeable `chmod +x notify_obm.py` and own it to your checkmk-Site-User
 - modify your notification rule in checkmk and select "OBM-Notification" as "Notification Method"
 
 That's it.
