@@ -39,7 +39,7 @@ def buildMessage(eventData):
         <priority>%%priority</priority>
         <state>open</state>
         <object>Citrix</object>
-        <application>ControlUP</application>
+        <application>checkmk</application>
         <related_ci_hints type="urn:x-hp:2009:software:data_model:opr:type:related_ci_hints" version="1.0">
             <hint>@@%%host</hint>
         </related_ci_hints>
