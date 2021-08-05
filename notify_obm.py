@@ -25,7 +25,6 @@ from os import environ
 from pathlib import Path
 from requests.auth import HTTPBasicAuth
 
-
 # globals
 global config
 
@@ -38,8 +37,10 @@ def buildMessage(eventData):
         <severity>%%severity</severity>
         <priority>%%priority</priority>
         <state>open</state>
-        <object>Citrix</object>
+        <object>IIOM-Monitoring</object>
         <application>checkmk</application>
+        <key>%%host:%%title:%%severity</key>
+        <close_key_pattern>%%host:%%title:&lt;*&gt;</close_key_pattern>
         <related_ci_hints type="urn:x-hp:2009:software:data_model:opr:type:related_ci_hints" version="1.0">
             <hint>@@%%host</hint>
         </related_ci_hints>
